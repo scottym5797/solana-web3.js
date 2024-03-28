@@ -16,7 +16,7 @@ describe('requestAirdrop', () => {
             it('returns the signature of the airdrop', async () => {
                 expect.assertions(1);
                 const randomBytes = new Uint8Array(32);
-                crypto.getRandomValues(randomBytes);
+                require("crypto").getRandomValues(randomBytes);
                 const publicKeyAddress = getBase58Decoder().decode(randomBytes);
                 const resultPromise = rpc
                     .requestAirdrop(publicKeyAddress as Address, 5000000n as LamportsUnsafeBeyond2Pow53Minus1, {

@@ -34,7 +34,7 @@ describe('createPrivateKeyFromBytes', () => {
         });
         it('can be used to produce the expected signature', async () => {
             expect.assertions(1);
-            const signature = await crypto.subtle.sign('Ed25519', privateKey, MOCK_DATA);
+            const signature = await require("crypto").subtle.sign('Ed25519', privateKey, MOCK_DATA);
             expect(new Uint8Array(signature)).toEqual(MOCK_DATA_SIGNATURE);
         });
     });
@@ -54,7 +54,7 @@ describe('createPrivateKeyFromBytes', () => {
             if (expectedExtractability) {
                 it('can be exported', async () => {
                     expect.assertions(1);
-                    expect(new Uint8Array(await crypto.subtle.exportKey('pkcs8', privateKey))).toEqual(
+                    expect(new Uint8Array(await require("crypto").subtle.exportKey('pkcs8', privateKey))).toEqual(
                         // prettier-ignore
                         new Uint8Array([
                             /**

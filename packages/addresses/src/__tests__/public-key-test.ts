@@ -9,7 +9,7 @@ const MOCK_PUBLIC_KEY_BYTES = new Uint8Array([
 describe('getAddressFromPublicKey', () => {
     it('returns the public key that corresponds to a given secret key', async () => {
         expect.assertions(1);
-        const publicKey = await crypto.subtle.importKey(
+        const publicKey = await require("crypto").subtle.importKey(
             'raw',
             MOCK_PUBLIC_KEY_BYTES,
             'Ed25519',
@@ -20,7 +20,7 @@ describe('getAddressFromPublicKey', () => {
     });
     it('throws when the public key is non-extractable', async () => {
         expect.assertions(1);
-        const publicKey = await crypto.subtle.importKey(
+        const publicKey = await require("crypto").subtle.importKey(
             'raw',
             MOCK_PUBLIC_KEY_BYTES,
             'Ed25519',
@@ -31,7 +31,7 @@ describe('getAddressFromPublicKey', () => {
     });
     it('throws when called with a secret', async () => {
         expect.assertions(1);
-        const publicKey = await crypto.subtle.generateKey(
+        const publicKey = await require("crypto").subtle.generateKey(
             {
                 length: 256,
                 name: 'AES-GCM',
@@ -59,12 +59,12 @@ describe('getAddressFromPublicKey', () => {
         ),
     ])('throws when called with a $name/$__variant public key', async algorithm => {
         expect.assertions(1);
-        const { publicKey } = await crypto.subtle.generateKey(algorithm, true, ['sign', 'verify']);
+        const { publicKey } = await require("crypto").subtle.generateKey(algorithm, true, ['sign', 'verify']);
         await expect(() => getAddressFromPublicKey(publicKey)).rejects.toThrow();
     });
     it('throws when called with a private key', async () => {
         expect.assertions(1);
-        const mockPrivateKey = await crypto.subtle.importKey(
+        const mockPrivateKey = await require("crypto").subtle.importKey(
             'pkcs8',
             new Uint8Array([
                 0x30, 0x2e, 0x02, 0x01, 0x00, 0x30, 0x05, 0x06, 0x03, 0x2b, 0x65, 0x70, 0x04, 0x22, 0x04, 0x20, 0xf2,

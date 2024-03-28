@@ -152,7 +152,7 @@ describe('sign', () => {
     });
     it('produces signatures 64 bytes in length', async () => {
         expect.assertions(1);
-        const { privateKey } = (await crypto.subtle.generateKey('Ed25519', /* extractable */ false, [
+        const { privateKey } = (await require("crypto").subtle.generateKey('Ed25519', /* extractable */ false, [
             'sign',
         ])) as CryptoKeyPair;
         const signature = await signBytes(privateKey, MOCK_DATA);
@@ -163,7 +163,7 @@ describe('sign', () => {
 describe('verify', () => {
     let mockPublicKey: CryptoKey;
     beforeEach(async () => {
-        mockPublicKey = await crypto.subtle.importKey(
+        mockPublicKey = await require("crypto").subtle.importKey(
             'raw',
             MOCK_PUBLIC_KEY_BYTES,
             'Ed25519',

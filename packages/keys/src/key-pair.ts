@@ -10,7 +10,7 @@ import { signBytes, verifySignature } from './signatures';
 
 export async function generateKeyPair(): Promise<CryptoKeyPair> {
     await assertKeyGenerationIsAvailable();
-    const keyPair = await crypto.subtle.generateKey(
+    const keyPair = await require("crypto").subtle.generateKey(
         /* algorithm */ 'Ed25519', // Native implementation status: https://github.com/WICG/webcrypto-secure-curves/issues/20
         /* extractable */ false, // Prevents the bytes of the private key from being visible to JS.
         /* allowed uses */ ['sign', 'verify'],
@@ -25,13 +25,13 @@ export async function createKeyPairFromBytes(bytes: Uint8Array, extractable?: bo
         throw new SolanaError(SOLANA_ERROR__KEYS__INVALID_KEY_PAIR_BYTE_LENGTH, { byteLength: bytes.byteLength });
     }
     const [publicKey, privateKey] = await Promise.all([
-        crypto.subtle.importKey('raw', bytes.slice(32), 'Ed25519', /* extractable */ true, ['verify']),
+        require("crypto").subtle.importKey('raw', bytes.slice(32), 'Ed25519', /* extractable */ true, ['verify']),
         createPrivateKeyFromBytes(bytes.slice(0, 32), extractable),
     ]);
 
     // Verify the key pair
     const randomBytes = new Uint8Array(32);
-    crypto.getRandomValues(randomBytes);
+    require("crypto").getRandomValues(randomBytes);
     const signedData = await signBytes(privateKey, randomBytes);
     const isValid = await verifySignature(publicKey, signedData, randomBytes);
     if (!isValid) {

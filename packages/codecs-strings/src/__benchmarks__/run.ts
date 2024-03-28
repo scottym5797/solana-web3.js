@@ -13,7 +13,7 @@ const bench = new Bench({
 const bytes32 = new Uint8Array(32);
 let base58EncodedString: string;
 function randomizeBytes() {
-    crypto.getRandomValues(bytes32);
+    require("crypto").getRandomValues(bytes32);
 }
 const base58Codec = getBase58Codec();
 

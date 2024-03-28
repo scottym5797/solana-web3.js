@@ -8,6 +8,6 @@ export async function getAddressFromPublicKey(publicKey: CryptoKey): Promise<Add
     if (publicKey.type !== 'public' || publicKey.algorithm.name !== 'Ed25519') {
         throw new SolanaError(SOLANA_ERROR__ADDRESSES__INVALID_ED25519_PUBLIC_KEY);
     }
-    const publicKeyBytes = await crypto.subtle.exportKey('raw', publicKey);
+    const publicKeyBytes = await require("crypto").subtle.exportKey('raw', publicKey);
     return getAddressDecoder().decode(new Uint8Array(publicKeyBytes));
 }

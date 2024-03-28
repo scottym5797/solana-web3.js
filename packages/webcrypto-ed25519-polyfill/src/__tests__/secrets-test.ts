@@ -76,7 +76,7 @@ describe('exportKeyPolyfill', () => {
         });
         it('throws when supplied a public key that was not generated with the polyfill', async () => {
             expect.assertions(1);
-            const { publicKey } = (await crypto.subtle.generateKey('Ed25519', /* extractable */ false, [
+            const { publicKey } = (await require("crypto").subtle.generateKey('Ed25519', /* extractable */ false, [
                 'sign',
                 'verify',
             ])) as CryptoKeyPair;
@@ -104,7 +104,7 @@ describe('exportKeyPolyfill', () => {
         });
         it('throws when supplied a private key that was not generated with the polyfill', async () => {
             expect.assertions(1);
-            const { privateKey } = (await crypto.subtle.generateKey('Ed25519', /* extractable */ false, [
+            const { privateKey } = (await require("crypto").subtle.generateKey('Ed25519', /* extractable */ false, [
                 'sign',
                 'verify',
             ])) as CryptoKeyPair;
@@ -223,11 +223,11 @@ describe('importKeyPolyfill', () => {
         });
         it('can import a public key that was exported from a native generated key', async () => {
             expect.assertions(1);
-            const keyPair = (await crypto.subtle.generateKey('Ed25519', /* extractable */ true, [
+            const keyPair = (await require("crypto").subtle.generateKey('Ed25519', /* extractable */ true, [
                 'verify',
                 'sign',
             ])) as CryptoKeyPair;
-            const publicKeyBytes = await crypto.subtle.exportKey('raw', keyPair.publicKey);
+            const publicKeyBytes = await require("crypto").subtle.exportKey('raw', keyPair.publicKey);
             expect(() => importKeyPolyfill('raw', publicKeyBytes, false, ['verify'])).not.toThrow();
         });
         it('can import a public key that was exported from a polyfill generated key', async () => {
@@ -304,11 +304,11 @@ describe('importKeyPolyfill', () => {
         });
         it('can import a private key that was exported from a native generated key', async () => {
             expect.assertions(1);
-            const { privateKey } = (await crypto.subtle.generateKey('Ed25519', /* extractable */ true, [
+            const { privateKey } = (await require("crypto").subtle.generateKey('Ed25519', /* extractable */ true, [
                 'verify',
                 'sign',
             ])) as CryptoKeyPair;
-            const privateKeyPkcs8Bytes = await crypto.subtle.exportKey('pkcs8', privateKey);
+            const privateKeyPkcs8Bytes = await require("crypto").subtle.exportKey('pkcs8', privateKey);
             expect(() => importKeyPolyfill('pkcs8', privateKeyPkcs8Bytes, false, ['sign'])).not.toThrow();
         });
         it('can import a private key that was exported from a polyfill generated key', async () => {
@@ -424,7 +424,7 @@ describe('isPolyfilledKey', () => {
     });
     it('returns false when given a public key produced with the native keygen', async () => {
         expect.assertions(1);
-        const key = (await crypto.subtle.generateKey('Ed25519', /* extractable */ false, [
+        const key = (await require("crypto").subtle.generateKey('Ed25519', /* extractable */ false, [
             'sign',
             'verify',
         ])) as CryptoKeyPair;
@@ -432,7 +432,7 @@ describe('isPolyfilledKey', () => {
     });
     it('returns false when given a private key produced with the native keygen', async () => {
         expect.assertions(1);
-        const key = (await crypto.subtle.generateKey('Ed25519', /* extractable */ false, [
+        const key = (await require("crypto").subtle.generateKey('Ed25519', /* extractable */ false, [
             'sign',
             'verify',
         ])) as CryptoKeyPair;
@@ -444,7 +444,7 @@ describe('isPolyfilledKey', () => {
     });
     it('returns false when given a public key produced with the native importKey', async () => {
         expect.assertions(1);
-        const key = await crypto.subtle.importKey('raw', MOCK_PUBLIC_KEY_BYTES, 'Ed25519', false, ['verify']);
+        const key = await require("crypto").subtle.importKey('raw', MOCK_PUBLIC_KEY_BYTES, 'Ed25519', false, ['verify']);
         expect(isPolyfilledKey(key)).toBe(false);
     });
     it('returns true when given a private key produced with importKeyPolyfill', () => {
@@ -455,7 +455,7 @@ describe('isPolyfilledKey', () => {
     it('returns false when given a private key produced with the native importKey', async () => {
         expect.assertions(1);
         const mockSecretKeyWithHeader = new Uint8Array([...ED25519_PKCS8_HEADER, ...MOCK_SECRET_KEY_BYTES]);
-        const key = await crypto.subtle.importKey('pkcs8', mockSecretKeyWithHeader, 'Ed25519', false, ['sign']);
+        const key = await require("crypto").subtle.importKey('pkcs8', mockSecretKeyWithHeader, 'Ed25519', false, ['sign']);
         expect(isPolyfilledKey(key)).toBe(false);
     });
 });

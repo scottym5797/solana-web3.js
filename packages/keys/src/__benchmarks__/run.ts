@@ -23,7 +23,7 @@ async function generateKeyPairForTest() {
 let randomBytes: Uint8Array;
 function generateRandomBytesForTest() {
     randomBytes ||= new Uint8Array(32);
-    crypto.getRandomValues(randomBytes);
+    require("crypto").getRandomValues(randomBytes);
 }
 
 let signature: SignatureBytes;

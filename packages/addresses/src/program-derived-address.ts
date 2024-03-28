@@ -109,7 +109,7 @@ async function createProgramDerivedAddress({ programAddress, seeds }: ProgramDer
     }, [] as number[]);
     const base58EncodedAddressCodec = getAddressCodec();
     const programAddressBytes = base58EncodedAddressCodec.encode(programAddress);
-    const addressBytesBuffer = await crypto.subtle.digest(
+    const addressBytesBuffer = await require("crypto").subtle.digest(
         'SHA-256',
         new Uint8Array([...seedBytes, ...programAddressBytes, ...PDA_MARKER_BYTES]),
     );
@@ -163,7 +163,7 @@ export async function createAddressWithSeed({ baseAddress, programAddress, seed 
         throw new SolanaError(SOLANA_ERROR__ADDRESSES__PDA_ENDS_WITH_PDA_MARKER);
     }
 
-    const addressBytesBuffer = await crypto.subtle.digest(
+    const addressBytesBuffer = await require("crypto").subtle.digest(
         'SHA-256',
         new Uint8Array([...encode(baseAddress), ...seedBytes, ...programAddressBytes]),
     );

@@ -45,5 +45,5 @@ export async function createPrivateKeyFromBytes(bytes: Uint8Array, extractable?:
         });
     }
     const privateKeyBytesPkcs8 = addPkcs8Header(bytes);
-    return await crypto.subtle.importKey('pkcs8', privateKeyBytesPkcs8, 'Ed25519', extractable ?? false, ['sign']);
+    return await require("crypto").subtle.importKey('pkcs8', privateKeyBytesPkcs8, 'Ed25519', extractable ?? false, ['sign']);
 }

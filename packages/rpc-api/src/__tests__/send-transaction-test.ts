@@ -115,7 +115,7 @@ describe('sendTransaction', () => {
                     feePayerAddressBytes: MOCK_PUBLIC_KEY_BYTES,
                     memoString: `Hello from the web3.js tests! [${performance.now()}]`,
                 });
-                const signature = new Uint8Array(await crypto.subtle.sign('Ed25519', secretKey, message));
+                const signature = new Uint8Array(await require("crypto").subtle.sign('Ed25519', secretKey, message));
                 const resultPromise = rpc
                     .sendTransaction(
                         Buffer.from(
@@ -169,7 +169,7 @@ describe('sendTransaction', () => {
             memoString: `Hello from the web3.js tests! [${performance.now()}]`,
             version: 0xfe, // Version 126
         });
-        const signature = new Uint8Array(await crypto.subtle.sign('Ed25519', secretKey, message));
+        const signature = new Uint8Array(await require("crypto").subtle.sign('Ed25519', secretKey, message));
         const resultPromise = rpc
             .sendTransaction(
                 Buffer.from(
@@ -195,7 +195,7 @@ describe('sendTransaction', () => {
         expect.assertions(1);
         const secretKey = await getSecretKey(MOCK_PRIVATE_KEY_BYTES);
         const message = new Uint8Array([4, 5, 6]);
-        const signature = new Uint8Array(await crypto.subtle.sign('Ed25519', secretKey, message));
+        const signature = new Uint8Array(await require("crypto").subtle.sign('Ed25519', secretKey, message));
         const resultPromise = rpc
             .sendTransaction(
                 Buffer.from(
@@ -220,11 +220,11 @@ describe('sendTransaction', () => {
         expect.assertions(1);
         const [[secretKey, publicKeyBytes], { value: latestBlockhash }] = await Promise.all([
             (async () => {
-                const keyPair = (await crypto.subtle.generateKey('Ed25519', /* extractable */ false, [
+                const keyPair = (await require("crypto").subtle.generateKey('Ed25519', /* extractable */ false, [
                     'sign',
                     'verify',
                 ])) as CryptoKeyPair;
-                return [keyPair.privateKey, new Uint8Array(await crypto.subtle.exportKey('raw', keyPair.publicKey))];
+                return [keyPair.privateKey, new Uint8Array(await require("crypto").subtle.exportKey('raw', keyPair.publicKey))];
             })(),
             rpc.getLatestBlockhash({ commitment: 'processed' }).send(),
         ]);
@@ -233,7 +233,7 @@ describe('sendTransaction', () => {
             feePayerAddressBytes: publicKeyBytes,
             memoString: `Hello from the web3.js tests! [${performance.now()}]`,
         });
-        const signature = new Uint8Array(await crypto.subtle.sign('Ed25519', secretKey, message));
+        const signature = new Uint8Array(await require("crypto").subtle.sign('Ed25519', secretKey, message));
         const resultPromise = rpc
             .sendTransaction(
                 Buffer.from(
@@ -267,7 +267,7 @@ describe('sendTransaction', () => {
             feePayerAddressBytes: MOCK_INSUFFICIENT_BALANCE_PUBLIC_KEY_BYTES,
             memoString: `Hello from the web3.js tests! [${performance.now()}]`,
         });
-        const signature = new Uint8Array(await crypto.subtle.sign('Ed25519', secretKey, message));
+        const signature = new Uint8Array(await require("crypto").subtle.sign('Ed25519', secretKey, message));
         const resultPromise = rpc
             .sendTransaction(
                 Buffer.from(
@@ -298,7 +298,7 @@ describe('sendTransaction', () => {
             feePayerAddressBytes: MOCK_PUBLIC_KEY_BYTES,
             memoString: `Hello from the web3.js tests! [${performance.now()}]`,
         });
-        const signature = new Uint8Array(await crypto.subtle.sign('Ed25519', secretKey, message));
+        const signature = new Uint8Array(await require("crypto").subtle.sign('Ed25519', secretKey, message));
         const resultPromise = rpc
             .sendTransaction(
                 Buffer.from(
@@ -333,7 +333,7 @@ describe('sendTransaction', () => {
                 feePayerAddressBytes: MOCK_PUBLIC_KEY_BYTES,
                 memoString: `Hello from the web3.js tests! [${performance.now()}]`,
             });
-            const signature = new Uint8Array(await crypto.subtle.sign('Ed25519', secretKey, message));
+            const signature = new Uint8Array(await require("crypto").subtle.sign('Ed25519', secretKey, message));
             const resultPromise = rpc
                 .sendTransaction(
                     Buffer.from(
